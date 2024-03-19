@@ -22,6 +22,10 @@ const testARC52 = (name: string, bip32Ed25519: Crypto.Bip32Ed25519) => {
           Crypto.Bip32PrivateKeyHex(rootKeyHex),
           vector.bip44path
         );
+
+        // getBip32PublicKey(.) concatenates an additional 64 bytes:
+        // this.#key.slice(CHAIN_CODE_INDEX, CHAIN_CODE_INDEX + CHAIN_CODE_SIZE)
+        // but the actual public key is only the first 64 bytes of the key.
         const calculatedPublicKeyHex = (await bip32Ed25519.getBip32PublicKey(calculatedPrivateKeyHex)).slice(0, 64);
 
         expect(calculatedPrivateKeyHex).toBe(generatedPrivateKeyHex);
