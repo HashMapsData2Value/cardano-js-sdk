@@ -16,19 +16,16 @@ const testARC52 = (name: string, bip32Ed25519: Crypto.Bip32Ed25519) => {
       for (const vector of arc52Vectors) {
         const rootKeyHex = Uint8ArrayToHexString(vector.rootKey);
         const generatedPrivateKeyHex = Crypto.Bip32PrivateKeyHex(Uint8ArrayToHexString(vector.generatedPrivateKey));
-        // const generatedPublicKeyHex = Crypto.Bip32PublicKeyHex(Uint8ArrayToHexString(vector.generatedPublicKey));
+        const generatedPublicKeyHex = Uint8ArrayToHexString(vector.generatedPublicKey);
 
         const calculatedPrivateKeyHex = await bip32Ed25519.derivePrivateKey(
           Crypto.Bip32PrivateKeyHex(rootKeyHex),
           vector.bip44path
         );
-        // const calculatedPublicKeyhex = await bip32Ed25519.derivePublicKey(
-        //   Crypto.Bip32PublicKeyHex(rootKeyHex),
-        //   vector.bip44path
-        // );
+        const calculatedPublicKeyHex = (await bip32Ed25519.getBip32PublicKey(calculatedPrivateKeyHex)).slice(0, 64);
 
         expect(calculatedPrivateKeyHex).toBe(generatedPrivateKeyHex);
-        // expect(calculatedPublicKeyhex).toBe(generatedPublicKeyHex);
+        expect(calculatedPublicKeyHex).toBe(generatedPublicKeyHex);
       }
     });
   });

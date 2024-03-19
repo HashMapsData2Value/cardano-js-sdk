@@ -55,7 +55,6 @@ const testBip32Ed25519 = (name: string, bip32Ed25519: Crypto.Bip32Ed25519) => {
       for (const vector of extendedVectors) {
         const rootKey = Crypto.Bip32PrivateKeyHex(vector.rootKey);
         const publicKey = await bip32Ed25519.getBip32PublicKey(rootKey);
-
         expect(publicKey).toBe(vector.publicKey);
       }
     });
